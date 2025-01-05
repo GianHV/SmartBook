@@ -32,7 +32,7 @@ namespace CatalogService.Controllers
             return APIResponse(data);
         }
         [HttpPost]
-        public IActionResult Add([FromBody] BookDto request)
+        public IActionResult Add([FromBody] BookRequestDto request)
         {
             var data = AddBook(request);
             return APIResponse(data);
@@ -88,7 +88,7 @@ namespace CatalogService.Controllers
             }
         }
 
-        private Book? GetBook(int id)
+        private BookResponseDto? GetBook(int id)
         {
             using (var conn = new SqlConnection(_connectionString))
             {
@@ -99,12 +99,12 @@ namespace CatalogService.Controllers
                 var parameters = new DynamicParameters();
                 parameters.Add("@id", id);
 
-                var result = conn.Query<Book>("sp_get_book", parameters, commandType: CommandType.StoredProcedure);
+                var result = conn.Query<BookResponseDto>("sp_get_book", parameters, commandType: CommandType.StoredProcedure);
                 return result.FirstOrDefault();
             }
         }
 
-        private IEnumerable<Book> GetBooks(BookFindCreterias creterias)
+        private IEnumerable<BookResponseDto> GetBooks(BookFindCreterias creterias)
         {
             using (var conn = new SqlConnection(_connectionString))
             {
@@ -119,11 +119,11 @@ namespace CatalogService.Controllers
                 parameters.Add("@skip", creterias.Skip);
                 parameters.Add("@take", creterias.Take);
 
-                var result = conn.Query<Book>("sp_get_books", parameters, commandType: CommandType.StoredProcedure);
+                var result = conn.Query<BookResponseDto>("sp_get_books", parameters, commandType: CommandType.StoredProcedure);
                 return result;
             }
         }
-        private int AddBook(BookDto book)
+        private int AddBook(BookRequestDto book)
         {
             int newId = 0;
             using (var conn = new SqlConnection(_connectionString))
