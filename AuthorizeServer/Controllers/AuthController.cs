@@ -84,6 +84,7 @@ namespace AuthorizeServer.Controllers
         {
             var claims = new List<Claim>
             {
+                new Claim(type: "id", value: userDto.cityzenNumber),
                 new Claim(ClaimTypes.Name,userDto.fullName),
                 new Claim(ClaimTypes.Role,userDto.role),
             };

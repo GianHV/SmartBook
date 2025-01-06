@@ -2,7 +2,7 @@
 {
     public class UserDTO
     {
-        public int citcityzenNumber { get; set; }
+        public string cityzenNumber { get; set; }
         public string fullName { get; set; }
         public string role { get; set; }
     }
