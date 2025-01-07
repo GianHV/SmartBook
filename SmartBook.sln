@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PayingService", "PayingServ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordService", "RecordService\RecordService.csproj", "{A5E7861A-F77D-43E1-8158-B59943679BBF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsService", "StatisticsService\StatisticsService.csproj", "{C05CCB72-F64F-4D6C-A32E-2AC32AB9D088}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{A5E7861A-F77D-43E1-8158-B59943679BBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5E7861A-F77D-43E1-8158-B59943679BBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5E7861A-F77D-43E1-8158-B59943679BBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C05CCB72-F64F-4D6C-A32E-2AC32AB9D088}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C05CCB72-F64F-4D6C-A32E-2AC32AB9D088}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C05CCB72-F64F-4D6C-A32E-2AC32AB9D088}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C05CCB72-F64F-4D6C-A32E-2AC32AB9D088}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
