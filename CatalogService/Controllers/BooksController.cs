@@ -84,7 +84,16 @@ namespace CatalogService.Controllers
                 parameters.Add("@yearPublished", book.YearPublished);
                 parameters.Add("@copiesTotal", book.CopiesTotal);
                 parameters.Add("@copiesAvailable", book.CopiesAvailable);
-                var result = conn.Execute("sp_edit_book", parameters, null, commandType: CommandType.StoredProcedure);
+
+                try
+                {
+                    var result = conn.Execute("sp_edit_book", parameters, null, commandType: CommandType.StoredProcedure);
+
+                }
+                catch (SqlException)
+                {
+                    throw;
+                }
             }
         }
 

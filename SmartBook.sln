@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogService", "CatalogSe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PayingService", "PayingService\PayingService.csproj", "{DA567008-39B8-4D2B-980C-730D387F63C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordService", "RecordService\RecordService.csproj", "{A5E7861A-F77D-43E1-8158-B59943679BBF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{DA567008-39B8-4D2B-980C-730D387F63C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA567008-39B8-4D2B-980C-730D387F63C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA567008-39B8-4D2B-980C-730D387F63C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5E7861A-F77D-43E1-8158-B59943679BBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5E7861A-F77D-43E1-8158-B59943679BBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5E7861A-F77D-43E1-8158-B59943679BBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5E7861A-F77D-43E1-8158-B59943679BBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

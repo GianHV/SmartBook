@@ -1,12 +1,13 @@
 
-using CatalogService.Middlewares;
 using Common.Base;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using RecordService.Alternative;
+using RecordService.Middlewares;
 using System.Net;
 using System.Security.Cryptography;
 
-namespace CatalogService
+namespace RecordService
 {
     public class Program
     {
@@ -16,10 +17,15 @@ namespace CatalogService
 
             // Add services to the container.
 
-            builder.Services.AddControllers(u => u.Filters.Add(new GlobalExceptionHandler()));
+            builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddHttpClient<IBookService, BookService>();
+            builder.Services.AddScoped<IBookService, BookService>();
+            builder.Services.AddHttpClient<IPayingService, PayingService>();
+            builder.Services.AddScoped<IPayingService, PayingService>();
 
             builder.Services.AddAuthentication(options =>
             {
@@ -64,7 +70,7 @@ namespace CatalogService
                     }
                 };
             }
-          );
+        );
 
             var app = builder.Build();
 
@@ -74,16 +80,16 @@ namespace CatalogService
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
-            app.UseHttpsRedirection();
             app.UseCors(options =>
             {
                 options.AllowAnyHeader();
                 options.AllowAnyOrigin();
                 options.AllowAnyMethod();
             });
-            app.UseAuthorization();
+            app.UseHttpsRedirection();
 
+            app.UseAuthorization();
+            app.UseMiddleware<TokenMiddleware>();
 
             app.MapControllers();
 

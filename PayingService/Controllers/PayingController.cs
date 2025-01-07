@@ -7,6 +7,9 @@ using Net.payOS.Types;
 using Net.payOS;
 using PayingService.Models;
 using PayingService.Services;
+using Dapper;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace PayingService.Controllers
 {
@@ -15,9 +18,13 @@ namespace PayingService.Controllers
     public class PayingController : ApiControllerBase
     {
         private IConfiguration _configuration;
+        private readonly string _connectionString;
         public PayingController(IConfiguration configuration)
         {
             _configuration = configuration;
+            _connectionString = configuration.GetSection("ConnectionStrings:DbConnectionString").Get<string>() ?? string.Empty;
+
+
         }
         [Authorize]
         [HttpPost(Name = "create-payment-link")]
@@ -37,9 +44,41 @@ namespace PayingService.Controllers
         {
             var payment = PaymentFactory.CreateInstance(Constants.CUSTOMER, _configuration);
             var result = await payment.CallBack(orderCode);
+
+            // redirect homepage if it result is true
             return APIResponse(result ?
                 "your money is sucessfully updated" :
                 "fail transaction! ypur money is keeping, don't worry");
+        }
+
+        [Authorize]
+        [HttpGet("getBalance")]
+        public IActionResult GetBalance()
+        {
+            int money = 0;
+            if(HttpContext.GetRole() == "customer")
+            {
+                money = GetMoney(HttpContext.GetUserId());
+            }
+            return APIResponse(money);
+        }
+
+        private int GetMoney(string userId)
+        {
+            int dayLater = 0;
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                if (conn.State == System.Data.ConnectionState.Closed)
+                {
+                    conn.Open();
+                }
+                var parameters = new DynamicParameters();
+                parameters.Add("@userId", userId);
+
+                var result = conn.Query<int>("sp_get_coin", parameters, null, commandType: CommandType.StoredProcedure);
+                if (result.Any()) dayLater = result.FirstOrDefault();
+            }
+            return dayLater;
         }
 
         private string processRedirect(PaymentResponse redirect)

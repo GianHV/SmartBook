@@ -9,7 +9,7 @@ namespace Common
         {
             var identity = context.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claims = identity.Claims;
-            return identity.FindFirst(c => c.Type == "UserId").Value;
+            return identity.FindFirst(c => c.Type == "id").Value;
         }
 
         public static string GetRole(this HttpContext context)
