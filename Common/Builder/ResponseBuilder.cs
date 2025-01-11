@@ -25,7 +25,7 @@ namespace Common.Builder
                     response.StatusCode = status;
                     response.IsSuccess = false;
                     response.Result = null;
-                    response.ErrorMessages = new List<string>() { "Your email or password is not correct" };
+                    response.ErrorMessages = new List<string>() { "Your username or password is not correct" };
                     break;
                 case HttpStatusCode.Forbidden:
                     response.StatusCode = status;
