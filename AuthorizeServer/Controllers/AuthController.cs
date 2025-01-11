@@ -37,7 +37,7 @@ namespace AuthorizeServer.Controllers
         }
 
         [HttpPost("add")]
-        [Authorize]
+        [Authorize(Roles = "employee,admin")]
         public IActionResult AddNewUser([FromBody] User request)
         {
             string isSuccess = AddingUser(request);
