@@ -38,6 +38,30 @@ namespace AuthorizeServer.Controllers
 
         [HttpPost("add")]
         [Authorize(Roles = "employee,admin")]
+
+        [HttpGet("customer")]
+        [Authorize(Roles = "employee,admin")]
+        public IActionResult GetCustomer([FromQuery] string username)
+        {
+            var response = GetCustomers(username);
+            return APIResponse(response);
+        }
+
+        private IEnumerable<UserDTO> GetCustomers(string username)
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                if (conn.State == System.Data.ConnectionState.Closed)
+                {
+                    conn.Open();
+                }
+                var parameters = new DynamicParameters();
+                parameters.Add("@username", username);
+                var result = conn.Query<UserDTO>("sp_get_customers", parameters, null, commandType: CommandType.StoredProcedure);
+                return result;
+            }
+        }
+
         public IActionResult AddNewUser([FromBody] User request)
         {
             string isSuccess = AddingUser(request);
