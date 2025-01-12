@@ -36,9 +36,6 @@ namespace AuthorizeServer.Controllers
             return APIResponse(response);
         }
 
-        [HttpPost("add")]
-        [Authorize(Roles = "employee,admin")]
-
         [HttpGet("customer")]
         [Authorize(Roles = "employee,admin")]
         public IActionResult GetCustomer([FromQuery] string username)
@@ -47,21 +44,9 @@ namespace AuthorizeServer.Controllers
             return APIResponse(response);
         }
 
-        private IEnumerable<UserDTO> GetCustomers(string username)
-        {
-            using (var conn = new SqlConnection(_connectionString))
-            {
-                if (conn.State == System.Data.ConnectionState.Closed)
-                {
-                    conn.Open();
-                }
-                var parameters = new DynamicParameters();
-                parameters.Add("@username", username);
-                var result = conn.Query<UserDTO>("sp_get_customers", parameters, null, commandType: CommandType.StoredProcedure);
-                return result;
-            }
-        }
-
+       
+        [HttpPost("add")]
+        [Authorize(Roles = "employee,admin")]
         public IActionResult AddNewUser([FromBody] User request)
         {
             string isSuccess = AddingUser(request);
@@ -75,6 +60,20 @@ namespace AuthorizeServer.Controllers
                 ErrorMessages = new List<string> { isSuccess }
             };
             return BadRequest(response);
+        }
+        private IEnumerable<UserDTO> GetCustomers(string username)
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                if (conn.State == System.Data.ConnectionState.Closed)
+                {
+                    conn.Open();
+                }
+                var parameters = new DynamicParameters();
+                parameters.Add("@username", username);
+                var result = conn.Query<UserDTO>("sp_get_customers", parameters, null, commandType: CommandType.StoredProcedure);
+                return result;
+            }
         }
 
         private string AddingUser(User user)
