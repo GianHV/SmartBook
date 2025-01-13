@@ -45,10 +45,11 @@ namespace PayingService.Controllers
             var payment = PaymentFactory.CreateInstance(Constants.CUSTOMER, _configuration);
             var result = await payment.CallBack(orderCode);
 
-            // redirect homepage if it result is true
-            return APIResponse(result ?
-                "your money is sucessfully updated" :
-                "fail transaction! ypur money is keeping, don't worry");
+            if (result)
+            {
+                return Redirect(_configuration.GetSection("Client:Success-page").Get<string>() ?? string.Empty);
+            }
+            else return Redirect(_configuration.GetSection("Client:Failed-page").Get<string>() ?? string.Empty);
         }
 
         [Authorize]
