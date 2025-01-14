@@ -25,12 +25,13 @@ namespace PayingService.Services
         public async Task<bool> CallBack(int orderCode)
         {
             PaymentLinkInformation paymentLinkInformation = await _payOS.getPaymentLinkInformation(orderCode);
-            if(paymentLinkInformation.status == "PAID" && !isTransactionPayed(orderCode))
+            if(paymentLinkInformation.status == "PAID")
             {
+                if (isTransactionPayed(orderCode)) return true;
                 UpdatePaidTransaction(orderCode, paymentLinkInformation.amountPaid);
                 return true;
             }
-            return false;
+             return false;
         }
 
         private bool isTransactionPayed(int orderCode)
