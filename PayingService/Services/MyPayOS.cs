@@ -25,12 +25,28 @@ namespace PayingService.Services
         public async Task<bool> CallBack(int orderCode)
         {
             PaymentLinkInformation paymentLinkInformation = await _payOS.getPaymentLinkInformation(orderCode);
-            if(paymentLinkInformation.status == "PAID")
+            if(paymentLinkInformation.status == "PAID" && !isTransactionPayed(orderCode))
             {
                 UpdatePaidTransaction(orderCode, paymentLinkInformation.amountPaid);
                 return true;
             }
             return false;
+        }
+
+        private bool isTransactionPayed(int orderCode)
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                if (conn.State == System.Data.ConnectionState.Closed)
+                {
+                    conn.Open();
+                }
+                var parameters = new DynamicParameters();
+                parameters.Add("@paymentId", orderCode);
+
+                var result = conn.Query<int>("sp_check_success_transaction", parameters, null, commandType: CommandType.StoredProcedure);
+                return result.FirstOrDefault() == 1;
+            }
         }
 
         public async Task<PaymentResponse> ProcessTransaction(PaymentRequest request)
