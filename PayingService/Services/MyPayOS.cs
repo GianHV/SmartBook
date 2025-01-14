@@ -5,6 +5,7 @@ using System.Data;
 using Net.payOS;
 using Net.payOS.Types;
 using PayingService.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace PayingService.Services
 {
@@ -12,6 +13,7 @@ namespace PayingService.Services
     {
         private readonly PayOS _payOS;
         private readonly string _connectionString;
+        private readonly string failPage;
 
         public MyPayOS(IConfiguration configuration)
         {
@@ -20,6 +22,7 @@ namespace PayingService.Services
                 configuration.GetSection("Environment:PAYOS_API_KEY").Value,
                 configuration.GetSection("Environment:PAYOS_CHECKSUM_KEY").Value);
                 _connectionString = configuration.GetSection("ConnectionStrings:DbConnectionString").Get<string>() ?? string.Empty;
+            failPage = configuration.GetSection("Client:Failed-page").Get<string>() ?? string.Empty;
         }
 
         public async Task<bool> CallBack(int orderCode)
@@ -63,7 +66,7 @@ namespace PayingService.Services
                 request.amount,
                 request.paymentType.ToString(),
                 items,
-                "https://www.awwwards.com/awwwards/collections/404-error-page",
+                failPage,
                 $"https://localhost:7206/api/paying/{orderCode}"
             );
 
